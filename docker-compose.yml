@@ -1,0 +1,19 @@
+services:
+  url-shortener:
+    build:
+      dockerfile: docker/Dockerfile
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+
+  redis-stack:
+    image: redis/redis-stack:latest
+    ports:
+      - "6379:6379"   # Redis server
+      - "8001:8001"   # Redis Stack browser UI
+    environment:
+      - REDIS_ARGS=--requirepass password
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
