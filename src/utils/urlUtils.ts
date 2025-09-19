@@ -13,5 +13,3 @@ function shortenUrl(url: string, maxLength: number = 15): string {
 }
 
 export {shortenUrl};
-
-console.log(shortenUrl('https://example.com/some/long/url'));
