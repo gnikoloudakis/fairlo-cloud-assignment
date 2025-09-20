@@ -1,7 +1,13 @@
 FROM node:current-alpine
 
 WORKDIR /usr/src/app
+
 COPY . .
-RUN npm install --loglevel debug
+
+WORKDIR /usr/src/app/src
+
+RUN npm install --loglevel verbose
+RUN npm test
+
 EXPOSE 3000
-CMD [ "node", "dist/app.js" ]
+CMD ["npm", "start"]

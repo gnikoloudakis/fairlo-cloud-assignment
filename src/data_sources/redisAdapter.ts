@@ -1,6 +1,7 @@
-import {createClient, RedisClientType} from "redis";
+import {createClient} from "redis";
+import {IDbAdapter} from "./IDbAdapter";
 
-class RedisAdapter {
+class RedisAdapter implements IDbAdapter {
     username: string;
     password: string;
     host: string;

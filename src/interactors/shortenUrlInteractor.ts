@@ -1,5 +1,5 @@
 import {PersistenceLayerRepository} from "../repositories/persistenceLayerRepository";
-import {shortenUrl} from "../utils/urlUtils";
+import {UrlDomain} from "../domain/urlDomain";
 
 class ShortenUrlInteractor {
     private repo: PersistenceLayerRepository;
@@ -9,19 +9,15 @@ class ShortenUrlInteractor {
     }
 
     async shortenUrl(originalUrl: string): Promise<string> {
-        let shortenedUrl = shortenUrl(originalUrl, 8)
-        let counter = 0;
-        while (await this.repo.getValue(shortenedUrl) !== null) { // ensure the shortenedUrl is unique
-            shortenedUrl = shortenUrl(encodeURIComponent(originalUrl));
-            counter += 1;
-            if (counter > 5) {
-                throw new Error('Could not generate a unique shortened URL (tried 5 times already). Please try again.');
-            }
+        let urlDomain = new UrlDomain(originalUrl);
+
+        let shortenedUrl = urlDomain.shortenUrl();
+        console.log(await this.repo.getValue(shortenedUrl), '----')
+        if (await this.repo.getValue(shortenedUrl)) {
+            console.log('Url already exists. Returning existing shortened URL.');
+            return shortenedUrl;
         }
-
-        console.log('Shortened URL is unique after ', counter, ' attempts.');
-        console.log('shortenedUrl: ', shortenedUrl);
-
+        // If not exists, store the new mapping and return the shortened URL
         await this.repo.setValue(shortenedUrl, originalUrl);
         return shortenedUrl;
     }
