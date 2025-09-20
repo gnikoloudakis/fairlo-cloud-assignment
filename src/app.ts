@@ -3,7 +3,7 @@ import {redirectToOriginalUrlController, urlShortenerController} from "./control
 
 const app = express();
 app.use(express.json({limit: '50mb'}));
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 80;
 
 app.get('/', (req, res) => {
     res.send('Hello, TypeScript + Express!');
