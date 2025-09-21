@@ -20,6 +20,7 @@ class RedisAdapter implements IDbAdapter {
     }
 
     private async getDBClient() {
+        console.log('Connecting to Redis at ', `${this.host}:${this.port}`);
         return await createClient({url: `redis://${this.username}:${this.password}@${this.host}:${this.port}`})
             .on("error", (err: any) => {
                 console.log("Redis Client Error", err)
@@ -41,8 +42,10 @@ class RedisAdapter implements IDbAdapter {
         try {
             client = await this.getDBClient();
             if (command == 'get') {
+                console.log('Getting key from Redis: ', key);
                 return await client.get(key);
             } else if (command == 'set' && value !== undefined) {
+                console.log('Setting key in Redis: ', key);
                 return await client.set(key, value);
             } else {
                 throw new Error("Invalid command or missing value for set");
@@ -51,6 +54,7 @@ class RedisAdapter implements IDbAdapter {
             console.error("Error fetching key from Redis:", error);
             throw error; //propagate the error after logging it
         } finally {
+            console.log('Closing Redis client');
             client?.destroy() // Ensure the client is closed after operation. if client is defined
         }
     }
