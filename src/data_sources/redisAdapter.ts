@@ -3,7 +3,7 @@ import {IDbAdapter} from "./IDbAdapter";
 
 class RedisAdapter implements IDbAdapter {
     username: string;
-    password: string;
+    password?: string;
     host: string;
     port: string;
     redis_tls: boolean;
@@ -11,7 +11,7 @@ class RedisAdapter implements IDbAdapter {
 
     constructor() {
         this.username = process.env.REDIS_HOST_USERNAME || 'default';
-        this.password = process.env.REDIS_HOST_PASSWORD || 'password';
+        this.password = process.env.REDIS_HOST_PASSWORD; // Required for secure connection. If not set, will throw error.
         this.host = process.env.REDIS_HOST || 'localhost';
         this.port = process.env.REDIS_PORT || '6379';
         this.redis_tls = process.env.REDIS_TLS_ENABLED === 'true';
