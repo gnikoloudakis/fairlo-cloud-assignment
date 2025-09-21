@@ -21,7 +21,7 @@ class RedisAdapter implements IDbAdapter {
 
     private async getDBClient() {
         console.log('Connecting to Redis at ', `${this.host}:${this.port}`);
-        return await createClient({url: `redis://${this.username}:${this.password}@${this.host}:${this.port}`,
+        return await createClient({url: `rediss://${this.username}:${this.password}@${this.host}:${this.port}`,
             socket: {
                 tls: true,
                 rejectUnauthorized: false // Set to true in production with proper CA certs
