@@ -16,6 +16,7 @@ class RedisAdapter implements IDbAdapter {
         if (!this.password) {
             throw new Error("REDIS_HOST_PASSWORD environment variable is required for secure Redis connection.");
         }
+        console.log('redis host: ', this.host);
     }
 
     private async getDBClient() {
