@@ -6,12 +6,16 @@ class RedisAdapter implements IDbAdapter {
     password: string;
     host: string;
     port: string;
+    redis_tls: boolean;
+    redis_url: string;
 
     constructor() {
         this.username = process.env.REDIS_HOST_USERNAME || 'default';
         this.password = process.env.REDIS_HOST_PASSWORD || 'password';
         this.host = process.env.REDIS_HOST || 'localhost';
         this.port = process.env.REDIS_PORT || '6379';
+        this.redis_tls = process.env.REDIS_TLS_ENABLED === 'true';
+        this.redis_url = `${this.redis_tls?'rediss':'redis'}://${this.username}:${this.password}@${this.host}:${this.port}`
 
         if (!this.password) {
             throw new Error("REDIS_HOST_PASSWORD environment variable is required for secure Redis connection.");
@@ -21,7 +25,7 @@ class RedisAdapter implements IDbAdapter {
 
     private async getDBClient() {
         console.log('Connecting to Redis at ', `${this.host}:${this.port}`);
-        return await createClient({url: `rediss://${this.username}:${this.password}@${this.host}:${this.port}`,
+        return await createClient({url: this.redis_url,
             socket: {
                 tls: true,
                 rejectUnauthorized: false // Set to true in production with proper CA certs
