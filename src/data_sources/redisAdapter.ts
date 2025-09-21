@@ -15,7 +15,8 @@ class RedisAdapter implements IDbAdapter {
         this.host = process.env.REDIS_HOST || 'localhost';
         this.port = process.env.REDIS_PORT || '6379';
         this.redis_tls = process.env.REDIS_TLS_ENABLED === 'true';
-        this.redis_url = `${this.redis_tls?'rediss':'redis'}://${this.username}:${this.password}@${this.host}:${this.port}`
+        // this.redis_url = `${this.redis_tls?'rediss':'redis'}://${this.username}:${this.password}@${this.host}:${this.port}`
+        this.redis_url = `${this.redis_tls?'rediss':'redis'}://${this.password}@${this.host}:${this.port}`
 
         if (!this.password) {
             throw new Error("REDIS_HOST_PASSWORD environment variable is required for secure Redis connection.");
