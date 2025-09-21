@@ -1,9 +1,9 @@
-import {RedisAdapter} from "../data_sources/redisAdapter";
+import {IDbAdapter} from "../data_sources/IDbAdapter";
 
 class PersistenceLayerRepository {
-    private dataSource: RedisAdapter;
+    private dataSource: IDbAdapter;
 
-    constructor(dataSource: RedisAdapter) {
+    constructor(dataSource: IDbAdapter) {
         this.dataSource = dataSource;
     }
 
@@ -15,4 +15,5 @@ class PersistenceLayerRepository {
         return await this.dataSource.set_key(key, value);
     }
 }
+
 export {PersistenceLayerRepository};
