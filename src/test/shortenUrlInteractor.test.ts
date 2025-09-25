@@ -11,6 +11,7 @@ function getMockedInteractor(adapterGetReturnValue: any, adapterSetReturnValue: 
 }
 
 describe("Test shortenUrlInteractor module", () => {
+    process.env.REDIS_HOST_PASSWORD = 'password';
     const mockedInteractor = getMockedInteractor(null, null);
     const testUrl = "https://example.com/some/long/url";
     const encodedUrl = btoa(testUrl);

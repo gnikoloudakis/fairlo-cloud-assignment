@@ -5,7 +5,10 @@ services:
     env_file:
       - .env
     ports:
-      - "3000:3000"
+      - "3000:80"
+    environment:
+      - ENV=local
+      - REDIS_HOST_PASSWORD=password
 
   redis-stack:
     image: redis/redis-stack:latest

@@ -2,6 +2,7 @@ import {createClient} from "redis";
 import {IDbAdapter} from "./IDbAdapter";
 
 class RedisAdapter implements IDbAdapter {
+    env?: string
     username: string;
     password?: string;
     host: string;
@@ -10,6 +11,7 @@ class RedisAdapter implements IDbAdapter {
     redis_url: string;
 
     constructor() {
+        this.env = process.env.ENV;
         this.username = process.env.REDIS_HOST_USERNAME || 'default';
         this.password = process.env.REDIS_HOST_PASSWORD; // Required for secure connection. If not set, will throw error.
         this.host = process.env.REDIS_HOST || 'localhost';
@@ -26,6 +28,15 @@ class RedisAdapter implements IDbAdapter {
 
     private async getDBClient() {
         console.log('Connecting to Redis at ', `${this.host}:${this.port}`);
+        if (this.env && this.env === 'local') {
+            return await createClient({url: this.redis_url})
+                .on("error", (err: any) => {
+                    console.log("Redis Client Error", err)
+                    throw err;
+                })
+                .connect();
+        }
+
         return await createClient({url: this.redis_url,
             socket: {
                 tls: true,
